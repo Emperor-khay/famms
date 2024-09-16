@@ -1,0 +1,424 @@
+User functions
+-view products
+-place orders (add to card to buy later or buy now)
+-login
+-payment option
+-recieve mail notification
+
+Admin functions
+-CRUD products
+-view and cancel orders
+-send mail notification
+
+===============================================================================
+Procedures
+================================================================================
+
+Jetstream for Admin & User login and registration
+1. composer require laravel/jetstream
+2. php artisan jetstream:install livewire
+3. npm install
+4. npm run dev
+5. edit user migrations as you like (add usertype in order to distinguish between user and admin)
+6. php artisan migrate 
+7. edit the register page to suit the changes in user migration. (note that and changes made should also be made in user model)
+8. add validation rule in app/actions/fortify/createnewuser (validator and return functions)
+9. create dashboard route in web.php comment jetstream dashboard route and use their route parameter for custom dashboard route. (Route::get('/url',[Controller::class,'function']);)
+10. controller logic to identify Admin and user
+$usertype=Auth::user()->usertype;
+        if($usertype=='1')
+        {
+            return view('admin.home');
+        }
+        else
+        {
+            return view('dashboard');
+        }
+
+Integrating template
+1. download template, copy and past template content in new folder inside public directory
+2. create new folder in view the create userpage blade file
+3. copy the contents of template index file in public folder and paste in userpage blade file
+4. Comment default home route and make new home route to replace the welcome page
+5. in the userpage blade file, when referencing assets, just add home/ to all existing urls (cannot explain how tf it works....just some freaky shii)
+6. To seperate sections of the code into different files, copy the section, create a different folder with the section name, replace the section code with an include statement containig the section file path.
+7. steal login and register route logic for auth and guest from welcome page. u sabi the rest na
+
+8. Logout function will not work. Don't panick, copy layout tag only from jetstream dashboard instead of writing logout route. User theirs. or you use normal logout form if profile management is not involved.
+
+Admin Panel
+1. copy template as done earlier in user section
+2. segment the sections into different files as done earlier in user section
+3. add x-app-layout tag in list tag to replace their logout dropdown
+4. create category route in web.php and start customizing neseccary admin pages.
+5. while executing crud operations, add ', $data->id' links that recquire the id of a particular item in focus.
+6. if the styling refuses to show when entering a page inside another page, then it's because the system has lost track of our base folder because of the very stupid method we are using. in the head tag, add <base href="/public"> then continue with your CRUD for admin. 
+7.             {{ $products->appends(request()->all())->links() }}
+for pagination links.
+
+
+Laravel card payment using stripe
+1. composer require stripe/stripe-php
+2. create stripe account
+3. add publish key (STRIPE_KEY) and secret key (STRIPE_SECRET) in env file
+4. create a route and when calling the route, pass the variable carrying the total amount of ordered goods the way id is usually passed into route
+
+
+Email verification
+1. sign in to mailtrap
+2. configure env
+3. uncomment email verify namespace in user model and add 'implements MustVerifyEmail' to the class extends function
+4. uncomment email verification in fortify.php
+5. create new user and check inbox on mailtrap
+
+
+Email Notifications (incomplete)
+1. create email notification form (must contain button_name and url as text fields)
+1. php artisan notifications:table
+2. php artisan migrate
+3. php artisan make:notification NotificationName
+4. Locate the notification file in app/notifications
+5.     private $details; (under use Queuable)
+6. replace existing construct
+public function __construct($details)
+    {
+        $this->details = $details;
+    }
+7. edit toMail function
+        return (new MailMessage)
+                    ->greeting($this->details['greeting'])
+                    ->line($this->details['firstline'])
+                    ->line($this->details['body'])
+                    ->action($this->details['button_name'], $this->details['url'])
+                    ->line($this->details['lastline']);
+NB: texts are represented with ->line, while the button and url are represented with ->action as shown above
+8. create route for sending email notifications with order id
+9. in controller, 
+public function send_user_email(Request $request, $id)
+    {
+        $order = Order::find($id);
+        $details = [
+            'greeting' => $request->greeting,
+            'firstline' => $request->firstline,
+            'body' => $request->body,
+            'button' => $request->button,
+            'url' => $request->url,
+            'lastline' => $request->lastline,
+        ];
+        $order->notify(new EmailNotification($details));
+        return redirect()->back()->with('success', 'Email Notification Sent');
+
+    }
+10. in model,
+use Illuminate\Notifications\Notifiable;
+    use Notifiable;
+
+NB: Jetstream uses the format; greeting, firstline, body, action, url to send email notifications.
+
+Search button for orders
+1.     public function search(Request $request)
+    {
+        $search = $request->search;
+        $order = Order::where('name', 'LIKE', "%$search%")->orwhere('phone', 'LIKE', "%$search%")->orwhere('product_title', 'LIKE', "%$search%")->get();
+        return view('admin.order', compact('order'));
+    }
+
+Visualization Dashboard
+1. edit home controller as follows
+                $total_product = Product::all()->count();
+                $total_order = Order::all()->count();
+                $total_user = User::where('usertype', '=', '0')->get()->count();
+                $order = Order::all();
+                $total_revenue = 0;
+                foreach($order as $order)
+                {
+                    $total_revenue=$total_revenue+$order->price;
+                }
+                $total_delivered = Order::where('delivery_status', '=', 'delivered')->get()->count();
+                $total_processing = Order::where('delivery_status', '=', 'processing')->get()->count();
+                return view('admin.home', compact('total_product', 'total_order', 'total_user', 'total_revenue', 'total_delivered', 'total_processing'));
+
+and use variables in admin.body i.e your visualization dashboard
+
+Show and Cancel Orders
+1. update delivery status to 'canceled'
+
+Comment Section(Blog)
+1. Comment box
+2. Show all comments under the comment box
+3. set the href for the reply link to javascript::void(0);
+4. create the reply container under the comment container
+5. set the display for reply container to none and give it an id
+6.       <script>
+        function reply(caller) {
+            $('#reply').insertAfter($(caller).closest('div'));
+            $('#reply').removeClass('d-none');
+        }
+    </script>
+where #reply is the reply container id
+7. Create new model and migration for comment and reply. comment should have user details and reply should reference comment id.
+8. send comment from form to database and render the comments in the home route. don't forget to check all routes that render to the same blade as your home routes too for Auth and guest users.
+9. add data-Commentid="{{ $comment->id }} attribute to comment container's reply button/link to store comment id
+10. create hidden input containing the stored comment id
+        <input type="text" name="commentId" id="commentId" class="d-none">
+11. update the earlier javascript reply fnction firstline to be
+            document.getElementById('commentId').value=$(caller).attr('data-Commentid');
+12. encase the contents of the reply section into a form. Use button tag with type submit for design purposes instead of input submit.
+13. when creating new reply in reply table, use 
+            $reply->comment_id=$request->commentId;
+to reference the saved comment id in the hidden input and store in the reply table
+14. render reply just like in comment, create container inside the comment container but under the reply button to show replies. 
+NB: nested foreach loops might generate error. if it does, change the iteration parameter. i.e foreach($reply as $reply) to foreach ($reply as $item). And after the foreach loop for comments, add an if statement that checks if the comment id in the reply == id in the comment before rendering reply.
+15. copy the reply link that triggers the reply input box and past in the reply display to toggle the reply input from reply section too for continuous reply
+16. search for 'reload page while maintaining scroll position' on stack overflow
+17. rearrange the order of showing comments from newest to oldest.
+18. when rendering a variable that already exists in blade but with new properties, e.g search results, make sure the new variable is the same with the one originally compacted to blade to avoid error. 
+
+
+Middleware
+        if(Auth::check()) {
+            $usertype = Auth::user()->usertype;
+            if($usertype == '0') {
+                return redirect()->back()->with('message', 'Unauthorized Access!!!');
+            } else {
+		#code
+            }
+        } else {
+            return redirect()->route('login');
+        }
+
+0 = user
+1 = admin
+
+
+Active classes (in the link container not the a tag itself)
+@if (Route::is('dashboard')) active @endif
+Or (for tabs or links with parameters)
+@if (request()->segment(2) == $variable->parameter) active text-dark border @endif
+
+SweetAlert
+1. composer require realrashid/sweet-alert
+2. php artisan sweetalert:publish
+3. Add this to the view where you want to show the message
+@include('sweetalert::alert')
+4. Go to your Controller and add this at the top
+use RealRashid\SweetAlert\Facades\Alert;
+5. Send the alert message from the controller and we are DONE.
+                        Alert::success('Product Added Successfully', 'We have added product to the cart');
+6. For delete links, change the javascript confirmation to onclick="confirmation(event)" as an attribute of the button for links and onsubmit="confirmation(event)" as an attribute of the form, for form action then search for sweetalert cdn and copy the script tag.
+7. write this script (for links)
+<script>
+      function confirmation(ev) {
+        ev.preventDefault();
+        var urlToRedirect = ev.currentTarget.getAttribute('href');  
+        console.log(urlToRedirect); 
+        swal({
+            title: "Are you sure to cancel this product",
+            text: "You will not be able to revert this!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willCancel) => {
+            if (willCancel) {
+
+
+                 
+                window.location.href = urlToRedirect;
+               
+            }  
+
+
+        });
+
+        
+    }
+</script>
+
+(for form action)
+<script>
+    function confirmation(ev) {
+        ev.preventDefault(); // Prevent the default form submission
+
+        var form = ev.target; // Get the form element
+        var urlToRedirect = form.action; // Get the action URL from the form
+
+        swal({
+            title: "Are you sure you want to cancel this product?",
+            text: "You will not be able to revert this!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willCancel) => {
+            if (willCancel) {
+                form.submit(); // Submit the form if confirmed
+            }
+        });
+    }
+</script>
+
+8. For multiple confirmation texts (works with forms only!),
+<script>
+    function confirmation(ev, title, text) {
+        ev.preventDefault(); // Prevent the default form submission
+
+        var form = ev.target; // Get the form element
+
+        swal({
+            title: title,
+            text: text,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willConfirm) => {
+            if (willConfirm) {
+                form.submit(); // Submit the form if confirmed
+            }
+        });
+    }
+</script>
+then for each of the links requiring confirmation, use;
+onsubmit="confirmation(event, 'Type your desired confirmation text', 'type your desired confirmation text detail')" as an attribute of the form
+
+
+TODO
+1. Middleware (check)
+2. Grouping Orders (not possible)
+3. Arrangement for taxes and shipping fee
+4. Calculate change in available quantity after a purchase and display available quantity as part of product details. Then provide a way to update product details in case of restock. (check)
+5. Make provision to view images in full screen
+6. Active Navbars (check)
+7. make provision for random unique invoice numbers
+8. Error message when placing order for out of stock products (check)
+9. Set all public links in the all pages to reference the have {{ asset('') }} instead of the base tag in the head section and comment the base tag (check)
+10. custom error pages
+11. change all success messages to sweet alert. (check)
+12. lazy loading
+13. implement order history for delivered goods instead of deleting orders (check)
+14. limit canceling orders for only cash on delivery
+15. blog
+
+NOTE::
+1. The find function in querry builders can be bitchy at times. When it happens, change approach.
+e.g
+        $variable = Model::find($variable_from_blade);
+to
+        $variable = Model::where('table_column', $variale_from_blade)->first();
+
+
+2. To set a time limit for a button, e.g the cancel order button,
+a. 
+
+	i- in blade, for the cancel order form
+@if (now()->diffInHours($variable->created_at) < 24)
+
+	ii- in controller cancel order function, first retrieve data from model to variable via query builder, then,
+if ($variable && now()->diffInHours($variable->created_at) < 24)
+{
+ 
+} else {
+        // Add an error message
+        Alert::error('Error', 'Cancellation period expired.');
+    }
+b.
+	i- in controller order/show_order function, after retrieving orders from 
+model
+$variable = $variable->map(function) ($variable) 
+{
+	$variable->can_cancel = now()-diffInHours(variable->created_at) <= 24;
+	return $variable;
+}
+
+	ii. in blade, for the cancel order link
+@if($variable->can_cancel)
+
+
+
+1. data-order-id="{{ $order->id }}"
+2. cancel-order-form, restore-order-form
+3. <script>
+$(document).ready(function() {
+    $('.cancel-order-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var orderId = form.data('order-id');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you really want to cancel this order?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('cancel_order', '') }}/" + orderId,
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        $('#order-' + orderId).html(response.view);
+                        Swal.fire(
+                            'Cancelled!',
+                            'Your order has been cancelled.',
+                            'success'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
+    $('.restore-order-form').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var orderId = form.data('order-id');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you really want to restore this order?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, restore it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('restore_order', '') }}/" + orderId,
+                    type: 'POST',
+                    data: form.serialize(),
+                    success: function(response) {
+                        $('#order-' + orderId).html(response.view);
+                        Swal.fire(
+                            'Restored!',
+                            'Your order has been restored.',
+                            'success'
+                        );
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+4. Before the endif for user authentication route for guest users in both the restore and cancel order functions
+                $order = Order::find($id); // Refresh order data
+                $view = view('partials.order', compact('order'))->render();
+
+                return response()->json(['view' => $view]);
+5. Create partial view
+
+
+To display date and time
+{{ $order->created_at->ago() }}
+{{ $order->created_at->diffForHumans(['parts' => 2, 'join' => true]) }}
+{{ $order->created_at->locale('fr')->translatedFormat('l jS \\of F Y h:i:s A') }}
+{{ $order->created_at->toIso8601String() }}
+{{ $order->created_at->toRfc1123String() }}
+{{ $order->created_at->toTimeString() }}
+{{ $order->created_at->toDateString() }}
+{{ $order->created_at->toDayDateTimeString() }}
+{{ $order->created_at->format('Y-m-d H:i:s') }}
+{{ $order->created_at }}
