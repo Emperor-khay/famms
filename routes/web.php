@@ -5,6 +5,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileInformationControllerProxy;
 use App\Http\Controllers\StripePaymentController;
@@ -86,5 +87,6 @@ Route::get('/trigger-500', function () {
     throw new Exception('This is a deliberate exception to trigger a 500 error.');
 });
 
+Route::get('send-mail', [EmailController::class, 'sendWelcomeEmail']);
 
 require_once __DIR__ . '/routes.php';

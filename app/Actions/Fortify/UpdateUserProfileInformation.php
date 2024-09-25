@@ -53,8 +53,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         $user->forceFill([
             'name' => $input['name'],
             'email' => $input['email'],
-            'phone' => ['nullable', 'string', 'size:11'],
-            'address' => ['required', 'string', 'max:255'],
+            'phone' => $input['phone'],
+            'address' => $input['address'],
             'email_verified_at' => null,
         ])->save();
 

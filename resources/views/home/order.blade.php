@@ -113,78 +113,78 @@
          </p>
       </div>
       <!-- jQery -->
-      <script src="/home/js/jquery-3.4.1.min.js"></script>
+      {{-- <script src="/home/js/jquery-3.4.1.min.js"></script> --}}
       <!-- popper js -->
-      <script src="/home/js/popper.min.js"></script>
+      {{-- <script src="/home/js/popper.min.js"></script> --}}
       <!-- bootstrap js -->
-      <script src="/home/js/bootstrap.js"></script>
+      {{-- <script src="/home/js/bootstrap.js"></script> --}}
       <!-- custom js -->
-      <script src="/home/js/custom.js"></script>
+      {{-- <script src="/home/js/custom.js"></script> --}}
 
       {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 
       <script>
-          function confirmAction(ev, title, text, callback) {
-              ev.preventDefault();
+    //       function confirmAction(ev, title, text, callback) {
+    //           ev.preventDefault();
 
-              swal({
-                  title: title,
-                  text: text,
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                  confirmButtonText: 'Yes, do it!',
-              }).then((willConfirm) => {
-                  if (willConfirm) {
-                      callback();
-                    }
-              });
-          }
+    //           swal({
+    //               title: title,
+    //               text: text,
+    //               icon: "warning",
+    //               buttons: true,
+    //               dangerMode: true,
+    //               confirmButtonText: 'Yes, do it!',
+    //           }).then((willConfirm) => {
+    //               if (willConfirm) {
+    //                   callback();
+    //                 }
+    //           });
+    //       }
 
-          function confirmLink(ev, title, text) {
-              confirmAction(ev, title, text, function() {
-                  window.location.href = ev.currentTarget.href;
-                });
-          }
+    //       function confirmLink(ev, title, text) {
+    //           confirmAction(ev, title, text, function() {
+    //               window.location.href = ev.currentTarget.href;
+    //             });
+    //       }
 
-          function confirmForm(ev, title, text) {
-        confirmAction(ev, title, text, function() {
-            // Prevent default form submission
-            ev.preventDefault();
+    //       function confirmForm(ev, title, text) {
+    //     confirmAction(ev, title, text, function() {
+    //         // Prevent default form submission
+    //         ev.preventDefault();
 
-            // Create a new FormData object from the form
-            const formData = new FormData(ev.target);
+    //         // Create a new FormData object from the form
+    //         const formData = new FormData(ev.target);
 
-            // Ensure the method is POST
-            const method = ev.target.method.toUpperCase();
-            if (method !== 'POST') {
-                throw new Error('Form method must be POST.');
-            }
+    //         // Ensure the method is POST
+    //         const method = ev.target.method.toUpperCase();
+    //         if (method !== 'POST') {
+    //             throw new Error('Form method must be POST.');
+    //         }
 
-            // Use fetch to submit the form data
-            fetch(ev.target.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Reload the page after successful form submission
-                    // swal("Success", "The action was completed successfully.", "success")
-                    .then(() => {
-                        location.reload(true);
-                    });
-                } else {
-                    return response.text().then(text => { throw new Error(text) });
-                }
-            })
-            .catch(error => {
-                swal("Error", "There was an error processing your request: " + error.message, "error");
-            });
-        });
-    }
+    //         // Use fetch to submit the form data
+    //         fetch(ev.target.action, {
+    //             method: 'POST',
+    //             body: formData,
+    //             headers: {
+    //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    //             }
+    //         })
+    //         .then(response => {
+    //             if (response.ok) {
+    //                 // Reload the page after successful form submission
+    //                 // swal("Success", "The action was completed successfully.", "success")
+    //                 .then(() => {
+    //                     location.reload(true);
+    //                 });
+    //             } else {
+    //                 return response.text().then(text => { throw new Error(text) });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             swal("Error", "There was an error processing your request: " + error.message, "error");
+    //         });
+    //     });
+    // }
 
     // function confirmForm(ev, title, text) {
         //       confirmAction(ev, title, text, function() {

@@ -18,8 +18,8 @@
 
                 @include('message')
 
-                <div class="text-center pt-2">
-                    <h2 class="fs-1 pb-md-5 p-0">All Orders</h2>
+                <div class="pt-2 text-center">
+                    <h2 class="p-0 fs-1 pb-md-5">All Orders</h2>
                 </div>
 
                 <div>
@@ -30,7 +30,7 @@
                     </form>
                 </div>
                 <div class="mt-md-5" style="overflow-x: auto">
-                    <table class="border border-success mx-auto w-md-50 text-center table table-striped table-responsive-md">
+                    <table class="table mx-auto text-center border border-success w-md-50 table-striped table-responsive-md">
                         <thead>
                             <tr>
                                 <th>Name </th>
@@ -82,7 +82,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="16"><p class="text-danger">No Data Found</p></td>
+                                        <td colspan="16"><p class="text-danger">No Orders To Display</p></td>
                                     </tr>
                                 @endforelse
                             {{-- @else
