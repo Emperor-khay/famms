@@ -10,6 +10,7 @@
                        </div>
                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
                        <form action="">
+                        @csrf
                           <input type="email" placeholder="Enter your email">
                           <button>
                           subscribe

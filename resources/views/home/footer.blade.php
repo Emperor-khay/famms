@@ -54,6 +54,7 @@
                        </div>
                        <div class="form_sub">
                           <form>
+                            @csrf
                              <fieldset>
                                 <div class="field">
                                    <input type="email" placeholder="Enter Your Mail" name="email" />

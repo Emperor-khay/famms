@@ -17,11 +17,12 @@
 
                 @include('message')
 
-                <div class="text-center pt-2 mt-5">
-                    <h2 class="fs-1 pb-md-5 p-0 mb-3">Send Email to {{ $order->email }}</h2>
+                <div class="pt-2 mt-5 text-center">
+                    <h2 class="p-0 mb-3 fs-1 pb-md-5">Send Email to {{ $order->email }}</h2>
                     <d class="d-flex justify-content-center">
                         <div class="row col-md-8 col-sm-11">
                             <form action="{{ route('send_user_email', $order->id) }}"  method="POST" class="w-100 text-light">
+                                @csrf
                                 <div class="mb-3">
                                     <label for="greeting" >Email Greeting:</label>
                                     <input type="text" name="greeting" class="form-control text-light" required>

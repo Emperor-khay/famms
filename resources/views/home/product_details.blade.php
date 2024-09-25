@@ -12,7 +12,7 @@
         @include('sweetalert::alert')
 
 
-        <div class="p-2 mx-auto  col-sm-6 col-md-4 col-lg-4">
+        <div class="p-2 mx-auto col-sm-6 col-md-4 col-lg-4">
             <div class="box">
                 <div class="img-box">
                     <img src="/product/{{ $product->image }}" alt="" class="img img-fluid">

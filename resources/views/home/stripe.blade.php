@@ -42,7 +42,7 @@
                                 style="margin-top: 20px; width: 100%;padding: 7px;"
                                 onclick="createToken()"
                                 value="PAY ${{ $total }}">
-                            <form>
+                            </form>
                         </div>
                     </div>
                 </div>

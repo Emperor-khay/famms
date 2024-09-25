@@ -11,8 +11,8 @@
         {{-- @include('message') --}}
         @include('sweetalert::alert')
 
-        <div class="container mt-5  ">
-            <table class="table table-responsive-md table-striped text-center border">
+        <div class="container mt-5 ">
+            <table class="table text-center border table-responsive-md table-striped">
                 <thead>
                     <tr>
                         <th>Product Title</th>
@@ -38,19 +38,20 @@
                         </td>
                         <td class="align-middle" style="max-height:100px">
                             <div class="d-flex justify-content-center">
-                                {{-- <a href="{{ route('edit_cart', $cart->id) }}" class="btn btn-primary mx-1">Change Quantity</a> --}}
+                                {{-- <a href="{{ route('edit_cart', $cart->id) }}" class="mx-1 btn btn-primary">Change Quantity</a> --}}
 
                                 <form action="{{ route('edit_cart', $cart->id) }}" method="GET">
-                                    <input type="submit" value="Change Quantity" class="btn btn-primary mx-1 d-none d-lg-block">
-                                    <button type="submit" class="btn btn-primary mx-1 d-lg-none">
+                                    @csrf
+                                    <input type="submit" value="Change Quantity" class="mx-1 btn btn-primary d-none d-lg-block">
+                                    <button type="submit" class="mx-1 btn btn-primary d-lg-none">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                 </form>
 
                                 <form action="{{ route('remove_cart', $cart->id) }}" onsubmit="confirmation(event)" method="POST" data-product-title="{{ $cart->product_title }}">
                                     @csrf
-                                    <input type="submit" value="Remove" class="btn btn-danger mx-1 d-none d-lg-block">
-                                    <button type="submit" class="btn btn-danger mx-1 d-lg-none">
+                                    <input type="submit" value="Remove" class="mx-1 btn btn-danger d-none d-lg-block">
+                                    <button type="submit" class="mx-1 btn btn-danger d-lg-none">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -71,7 +72,7 @@
             </tbody>
             </table>
 
-            <div class="text-center mt-5">
+            <div class="mt-5 text-center">
             @if ($total == 0)
             <h2 class="text-danger">Price In Cart: ${{ $total }}</h2>
             <p>Check out our products. I'm sure you will find something you like</p>
@@ -82,7 +83,7 @@
         </div>
 
         @if ($total >0 )
-            <div class="text-center mt-5">
+            <div class="mt-5 text-center">
                 <h1>Proceed To Order</h1>
                 <a href="{{ route('cash_order') }}" class="btn btn-danger">Cash On Delivery</a>
                 <a href="{{ route('stripe', $total) }}" class="btn btn-danger" disabled>Pay Using Card</a>

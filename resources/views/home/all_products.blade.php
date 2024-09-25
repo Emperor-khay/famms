@@ -47,6 +47,7 @@
 
                     <div class="mt-3">
                     <form action="{{ route('product_search') }}" method="GET">
+                        @csrf
                             <input type="text" name="search" id="" placeholder="search">
                             <input type="submit" value="Search">
                         </form>
