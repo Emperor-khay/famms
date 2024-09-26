@@ -1,0 +1,3 @@
+mail works : using mailtrap for local and sendblue or postmark for prod
+registration works
+

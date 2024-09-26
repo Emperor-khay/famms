@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 class EmailController extends Controller
 {
     public function sendWelcomeEmail() {
+
+        dd('we here');
         $toEmail = 'emperor.khay17@gmail.com';
         $emailMessage = 'Mailer now works!!!';
         $emailSubject = 'Welcome Email';
