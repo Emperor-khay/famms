@@ -3,7 +3,7 @@
         <div class="container">
            <div class="box">
               <div class="arrival_bg_box">
-                 <img src="home/images/arrival-bg.png" alt="">
+                 <img src="{{ asset('home/images/arrival-bg.png') }}" alt="">
               </div>
               <div class="row">
                  <div class="ml-auto col-md-6">

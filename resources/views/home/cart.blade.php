@@ -34,7 +34,7 @@
                         <td style="max-height:100px" class="align-middle">{{ $cart->quantity }}</td>
                         <td style="max-height:100px" class="align-middle">${{ $cart->price }}</td>
                         <td style="max-width: 100px; max-height:100px" class="align-middle">
-                            <img src="/product/{{ $cart->image }}" alt="" class="img-fluid" >
+                            <img src="{{ asset('product/' . $cart->image) }}" alt="" class="img-fluid">
                         </td>
                         <td class="align-middle" style="max-height:100px">
                             <div class="d-flex justify-content-center">
@@ -86,7 +86,7 @@
             <div class="mt-5 text-center">
                 <h1>Proceed To Order</h1>
                 <a href="{{ route('cash_order') }}" class="btn btn-danger">Cash On Delivery</a>
-                <a href="{{ route('stripe', $total) }}" class="btn btn-danger" disabled>Pay Using Card</a>
+                {{-- <a href="{{ route('stripe', $total) }}" class="btn btn-danger">Pay Using Card</a> --}}
             </div>
         @endif
     </div>
@@ -96,7 +96,7 @@
     <div class="cpy_">
         <p class="mx-auto">© 2024 All Rights Reserved By <a href="https://emperor-khay.github.io/Dev-Khay-Portfolio/" target="_blank">Dev Khay</a><br>
 
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            {{-- Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a> --}}
 
         </p>
     </div>

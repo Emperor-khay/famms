@@ -61,7 +61,7 @@
 
                                 <div class="mb-3">
                                     <label>Current Product Image:</label>
-                                    <img src="{{ asset('product/' . $product->image) }}" alt="" class="img img-fluid mb-3">
+                                    <img src="{{ asset('/product/{{ $product->image }}') }}" alt="" class="img img-fluid mb-3">
                                     <label for="title" class="img-fluid">Change Product Image Here:</label><br>
                                     <input type="file" name="image" class="form-control">
                                 </div>

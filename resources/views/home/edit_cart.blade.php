@@ -33,7 +33,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Product Image</label><br>
-                    <img src="/product/{{ $cart->image }}" alt="" class="img-fluid img form-control">
+                    <img src="{{ asset('product/' . $cart->image) }}" alt="" class="img-fluid img form-control">
                 </div>
                 <div class="mb-3">
                     <input type="submit" value="Update Cart" class="btn btn-danger">
@@ -48,7 +48,7 @@
     <div class="cpy_">
         <p class="mx-auto">© 2024 All Rights Reserved By <a href="https://emperor-khay.github.io/Dev-Khay-Portfolio/" target="_blank">Dev Khay</a><br>
 
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            {{-- Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a> --}}
 
         </p>
     </div>

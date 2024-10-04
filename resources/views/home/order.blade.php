@@ -47,7 +47,7 @@
                         <td style="max-width: 100px; max-height:100px" class="align-middle">{{ $order->payment_status }}</td>
                         <td style="max-width: 100px; max-height:100px" class="align-middle">{{ $order->delivery_status }}</td>
                         <td style="max-width: 100px; max-height:100px" class="align-middle">
-                            <img src="/product/{{ $order->image }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('product/' . $order->image) }}" alt="" class="img-fluid img">
                         </td>
                         <td style="max-width: 100px; max-height:100px" class="align-middle">
 
@@ -108,7 +108,7 @@
         <div class="cpy_">
          <p class="mx-auto">© 2024 All Rights Reserved By <a href="https://emperor-khay.github.io/Dev-Khay-Portfolio/" target="_blank">Dev Khay</a><br>
 
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            {{-- Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a> --}}
 
          </p>
       </div>

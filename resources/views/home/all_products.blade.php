@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="img-box">
-                                <img src="product/{{ $product->image }}" alt="">
+                                <img src="{{ asset('product/' . $product->image) }}" alt="">
                             </div>
                             <div class="detail-box">
                                 <h5>
@@ -127,7 +127,7 @@
     <div class="cpy_">
         <p class="mx-auto">© 2024 All Rights Reserved By <a href="https://emperor-khay.github.io/Dev-Khay-Portfolio/" target="_blank">Dev Khay</a><br>
 
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            {{-- Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a> --}}
 
         </p>
     </div>

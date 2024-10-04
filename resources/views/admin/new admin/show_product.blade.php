@@ -55,7 +55,7 @@
                                                 <td>${{ $item->price }}</td>
                                                 <td>${{ $item->discount_price }}</td>
                                                 <td>
-                                                    <img src="{{ asset('product/' . $item->image) }}" alt="" class="img-fluid">
+                                                    <img src="{{ asset('/product/{{ $item->image }}') }}" alt="" class="img-fluid">
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('edit_product',$item->id) }}" class="btn btn-primary mx-1">Edit</a>

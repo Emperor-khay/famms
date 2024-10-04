@@ -201,8 +201,9 @@ class HomeController extends Controller
                 $cart = Cart::find($id);
                 $product = Product::where('id', '=', $cart->product_id)->first();
                 if ($request->quantity > $product->quantity) {
-                    Alert::error('Error', 'The requested quantity exceeds the available stock');
-                    return redirect()->back()
+                    $cart->quantity = $product->quantity;
+                    Alert::warning('Adjusted Quantity!', 'The requested quantity exceeds the available stock');
+                    return redirect()->route('show_cart');
                     // ->withErrors(['quantity' => 'The requested quantity exceeds the available stock.'])
                     ;
                 }else{
